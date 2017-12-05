@@ -47,6 +47,28 @@ namespace ExRam.Gremlinq
                 .AddStep<T>(new AddElementPropertiesStep(edge));
         }
 
+        public static IGremlinQuery<T> AddE<T>(this IGremlinQuery query, object edge)
+        {
+            return query
+                .AddStep<T>(new AddEGremlinStep(edge))
+                .AddStep<T>(new AddElementPropertiesStep(edge));
+        }
+
+        public static IGremlinQuery<T> AddE<T>(this IGremlinQuery query, T edge, string edgeName)
+        {
+            return query
+                .AddStep<T>(new AddEStringGremlinStep(edgeName))
+                .AddStep<T>(new AddElementPropertiesStep(edge));
+        }
+
+        public static IGremlinQuery<T> AddE<T>(this IGremlinQuery query, string edgeName)
+            where T : new()
+        {
+            return query
+                .AddStep<T>(new AddEStringGremlinStep(edgeName))
+                .AddStep<T>(new AddElementPropertiesStep(new T()));
+        }
+
         public static IGremlinQuery<T> And<T>(this IGremlinQuery<T> query, params Func<IGremlinQuery<T>, IGremlinQuery>[] andTraversals)
         {
             return query.And<T>(andTraversals
@@ -355,6 +377,12 @@ namespace ExRam.Gremlinq
         {
             return query
                 .AddStep<T>(new DerivedLabelNamesGremlinStep<T>("outE"));
+        }
+
+        public static IGremlinQuery<T> OutE<T>(this IGremlinQuery query, T edge)
+        {
+            return query
+                .AddStep<T>(new OutEStringGremlinStep(edge));
         }
 
         public static IGremlinQuery<T> OutV<T>(this IGremlinQuery query)

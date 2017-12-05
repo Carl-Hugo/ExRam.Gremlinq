@@ -56,8 +56,8 @@ namespace ExRam.Gremlinq.Azure
                         break;
                 }
 
-                if (value is string)
-                    value = $"'{value}'";
+                if (value is string sValue)
+                    value = $"'{sValue.Replace("'", "%27")}'";
                 else
                     value = value.ToString().ToLower();
 
